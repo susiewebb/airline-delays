@@ -55,8 +55,6 @@ airportYest <- airportYest %>%
   arrange(Airport)
 
 
-write_csv(airportNow, 'airportNow.csv')
-
 ##Uploading base data for datawrapper
 canceled <- read_csv('toupdate/airline_canceled.csv')
 canceled_per <- read_csv('toupdate/airline_canceled_per.csv')

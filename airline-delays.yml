@@ -51,10 +51,12 @@ jobs:
           
       - name: Run scraper
         env:
-          API_KEY: ${{ secrets.DW_API_KEY }}
-          ORIGIN_KEY: ${{ secrets.ORIGIN_KEY }}
-          DESTINATION_KEY: ${{ secrets.DESTINATION_KEY }}
-          AIRLINE_KEY: ${{ secrets.AIRLINE_KEY }}
+          API_KEY: ${{ secrets.API_KEY }}
+          CANCELED_KEY: ${{ secrets.CANCELED_KEY }}
+          CANCELEDPER_KEY: ${{ secrets.CANCELEDPER_KEY }}
+          DELAYED_KEY: ${{ secrets.DELAYED_KEY }}
+          DELAYEDPER_KEY: ${{ secrets.DELAYEDPER_KEY }}
+
         run: |
                 . ~/.Renviron
                 Rscript "airline_delay_update.R"

@@ -6,10 +6,10 @@ library(DatawRappr)
 
 #Loading API key, chart keys
 api_key <- Sys.getenv("API_KEY")
-canceledChart <- Sys.getenv("ORIGIN_KEY")
-canceledPerChart <- Sys.getenv("ORIGIN_KEY")
-delayedChart <- Sys.getenv("ORIGIN_KEY")
-delayedPerChart <- Sys.getenv("ORIGIN_KEY")
+canceledChart <- Sys.getenv("CANCELED_KEY")
+canceledPerChart <- Sys.getenv("CANCELEDPER_KEY")
+delayedChart <- Sys.getenv("DELAYED_KEY")
+delayedPerChart <- Sys.getenv("DELAYEDPER_KEY")
 
 
 datawrapper_auth(api_key =  api_key, overwrite=TRUE)

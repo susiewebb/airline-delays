@@ -112,7 +112,11 @@ delayed_per <- delayed_per %>%
 dw_edit_chart(
   chart_id = canceledChart,
   title = paste('Canceled flights by airline each day'),
-  intro = 'Click the icons below to see total flight delays/cancellations by each airline, and the percent of total airline flights affected each day.',
+  intro = 'Click the icons below to see total flight delays/cancellations by each airline, and the percent of total airline flights affected each day..<br>
+<a target="_self" href="https://datawrapper.dwcdn.net/O8gS2/" style="background-color:#3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:4px;  opacity: 100%; " rel="nofollow noopener"> Total Canceled</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/vCOr8/" style="background-color:#3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:4px;  opacity: 50%; " rel="nofollow noopener">% Canceled</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/wSryL/" style="background-color: #3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:12px;margin-bottom:9px;  opacity: 50%;rel="nofollow noopener">Total Delayed</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/YH2ZW/" style="background-color: #3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:12px;margin-bottom:9px; opacity: 50%; rel="nofollow noopener">% Delayed</a>"',
   byline = 'Susie Webb/Get the Facts Data Team',
   source_name = 'Flight Aware',
   source_url = 'flightaware.com',
@@ -133,7 +137,11 @@ dw_publish_chart(canceledChart)
 dw_edit_chart(
   chart_id = canceledPerChart,
   title = paste('Percent of canceled flights by airline each day'),
-  intro = 'Click the icons below to see total flight delays/cancellations by each airline, and the percent of total airline flights affected each day.',
+intro = 'Click the icons below to see total flight delays/cancellations by each airline, and the percent of total airline flights affected each day..<br>
+<a target="_self" href="https://datawrapper.dwcdn.net/O8gS2/" style="background-color:#3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:4px;  opacity: 50%; " rel="nofollow noopener"> Total Canceled</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/vCOr8/" style="background-color:#3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:4px;  opacity: 100%; " rel="nofollow noopener">% Canceled</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/wSryL/" style="background-color: #3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:12px;margin-bottom:9px;  opacity: 50%;rel="nofollow noopener">Total Delayed</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/YH2ZW/" style="background-color: #3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:12px;margin-bottom:9px; opacity: 50%; rel="nofollow noopener">% Delayed</a>"',
   byline = 'Susie Webb/Get the Facts Data Team',
   source_name = 'Flight Aware',
   source_url = 'flightaware.com',
@@ -154,7 +162,11 @@ dw_publish_chart(canceledPerChart)
 dw_edit_chart(
   chart_id = delayedChart,
   title = paste('Delayed flights by airline each day'),
-  intro = 'Click the icons below to see total flight delays/cancellations by each airline, and the percent of total airline flights affected each day.',
+  intro = 'Click the icons below to see total flight delays/cancellations by each airline, and the percent of total airline flights affected each day..<br>
+<a target="_self" href="https://datawrapper.dwcdn.net/O8gS2/" style="background-color:#3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:4px;  opacity: 50%; " rel="nofollow noopener"> Total Canceled</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/vCOr8/" style="background-color:#3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:4px;  opacity: 50%; " rel="nofollow noopener">% Canceled</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/wSryL/" style="background-color: #3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:12px;margin-bottom:9px;  opacity: 100%;rel="nofollow noopener">Total Delayed</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/YH2ZW/" style="background-color: #3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:12px;margin-bottom:9px; opacity: 50%; rel="nofollow noopener">% Delayed</a>"',
   byline = 'Susie Webb/Get the Facts Data Team',
   source_name = 'Flight Aware',
   source_url = 'flightaware.com',
@@ -175,7 +187,11 @@ dw_publish_chart(delayedChart)
 dw_edit_chart(
   chart_id =delayedPerChart,
   title = paste('Percent of delayed flights by airline each day'),
-  intro = 'Click the icons below to see total flight delays/cancellations by each airline, and the percent of total airline flights affected each day.',
+  intro = 'Click the icons below to see total flight delays/cancellations by each airline, and the percent of total airline flights affected each day..<br>
+<a target="_self" href="https://datawrapper.dwcdn.net/O8gS2/" style="background-color:#3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:4px;  opacity: 50%; " rel="nofollow noopener"> Total Canceled</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/vCOr8/" style="background-color:#3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:4px;  opacity: 50%; " rel="nofollow noopener">% Canceled</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/wSryL/" style="background-color: #3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:12px;margin-bottom:9px;  opacity: 50%;rel="nofollow noopener">Total Delayed</a> &nbsp
+<a target="_self" href="https://datawrapper.dwcdn.net/YH2ZW/" style="background-color: #3E495D; padding:4px 8px; border-radius:5px; color:#ffffff; font-weight:700; box-shadow:0px 0px 7px 2px rgba(0,0,0,0.07); cursor:pointer; display: inline-block;margin-bottom:2px;margin-top:12px;margin-bottom:9px; opacity: 100%; rel="nofollow noopener">% Delayed</a>"',
   byline = 'Susie Webb/Get the Facts Data Team',
   source_name = 'Flight Aware',
   source_url = 'flightaware.com',

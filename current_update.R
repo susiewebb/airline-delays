@@ -44,13 +44,13 @@ airportYest <- parse_table_rows(airportYest_html)
 airportNow <- airportNow %>%
   filter(grepl(airports, Airport)) %>%
   filter(!grepl('Rouge', Airport)) %>%
-  arrange(Airport)
+  arrange(Airport) %>%
+  rename(Airline = Airport)
 
 airportYest <- airportYest %>%
   filter(grepl(airports, Airport)) %>%
   filter(!grepl('Rouge', Airport)) %>%
-  arrange(Airport) %>%
-  rename(Airline = Airport)
+  arrange(Airport) 
 
 #Pulling today with time
 today_now <- format(as.POSIXct(Sys.time(), tz = "America/New_York"), "%b. %d at %I:%M %p %Z")

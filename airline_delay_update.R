@@ -63,7 +63,7 @@ delayed_per <- read_csv('toupdate/airline_delayed_per.csv')
 
 ##Pulling yesterday's date
 yesterday <- format(as.Date(with_tz(Sys.time(), tz = 'America/New_York')) - 1, "%b. %d")
-yesterday
+
 
 ##Pulling data as of
 today <- format(as.POSIXct(round_date(Sys.time(), 'hour'), tz = "America/New_York"), "%b. %d at %I %p %Z")

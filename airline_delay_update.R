@@ -70,7 +70,6 @@ today <- format(as.POSIXct(round_date(Sys.time(), 'hour'), tz = "America/New_Yor
 today <- sub(" at 0", " at ", today)
 today <- gsub("AM", "a.m.", today)
 today <- gsub("PM", "p.m.", today)
-today
 
 ##Adding yesterday's numbers
 canceled <- canceled %>%

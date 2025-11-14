@@ -59,15 +59,32 @@ today_now <- gsub("PM", "p.m.", today_now)
 today_now
 
 
+##Scraping
+total_html <- read_html('https://www.flightaware.com/live/cancelled/today')
+
+totals <- total_html %>%
+  html_elements("div[style='float: left; display: inline-block; max-width: 74%'] h3") %>%
+  html_text(trim = TRUE)
+
+totals <- data.frame(totals) %>%
+  separate(totals, into = c("key", "value"), sep = ":") %>%
+  mutate(
+    key = trimws(key),
+    value = trimws(value)
+  ) %>%
+  pivot_wider(names_from = key, values_from = value)
+
+
 ##Datawrapper chart
 dw_edit_chart(
   chart_id = currentChart,
-  title = paste('Current flight delays, cancellations'),
-  intro = '',
+  title = paste('Current flight delays, cancellations in the U.S.'),
+  intro = paste0("<span style='font-size: 18px;line-height: 26px;'><b>
+Total Delays:</b>", totals$`Total delays within, into, or out of the United States today`,"<br><b>Total Cancellations:</b>",totals$`Total cancellations within, into, or out of the United States today`,"</span>"),
   byline = 'Susie Webb/Get the Facts Data Team',
   source_name = 'Flight Aware',
   source_url = 'flightaware.com',
-  annotate = paste("<i>Data as of ",today_now,".</i>", sep='')
+  annotate = paste("<i>Data as of ",today_now,".</i> Total flight delays and cancellations include all flights within, into or out of the U.S.", sep='')
 )
 
 #Adding data to the chart

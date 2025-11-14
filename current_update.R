@@ -80,7 +80,7 @@ totals <- data.frame(totals) %>%
 ##Datawrapper chart
 dw_edit_chart(
   chart_id = currentChart,
-  title = paste('Flight delays, cancellations in the U.S. on',today_head),
+  title = paste('Flight cancellations, delays in the U.S. on',today_head),
   intro = paste0("<span style='font-size: 18px;line-height: 26px;'><b>Total Cancellations:</b>",totals$`Total cancellations within, into, or out of the United States today`,"<br><b>
 Total Delays:</b>", totals$`Total delays within, into, or out of the United States today`,"</span>"),
   byline = 'Susie Webb/Get the Facts Data Team',

@@ -57,7 +57,8 @@ today_now <- format(as.POSIXct(Sys.time(), tz = "America/New_York"), "%b. %d at 
 today_now <- sub(" at 0", " at ", today_now)
 today_now <- gsub("AM", "a.m.", today_now)
 today_now <- gsub("PM", "p.m.", today_now)
-today_now
+
+today_head <- format(as.POSIXct(Sys.time(), tz = "America/New_York"), "%b. %d")
 
 
 ##Scraping
@@ -79,7 +80,7 @@ totals <- data.frame(totals) %>%
 ##Datawrapper chart
 dw_edit_chart(
   chart_id = currentChart,
-  title = paste('Current flight delays, cancellations in the U.S.'),
+  title = paste('Flight delays, cancellations in the U.S. on',today_head),
   intro = paste0("<span style='font-size: 18px;line-height: 26px;'><b>
 Total Delays:</b>", totals$`Total delays within, into, or out of the United States today`,"<br><b>Total Cancellations:</b>",totals$`Total cancellations within, into, or out of the United States today`,"</span>"),
   byline = 'Susie Webb/Get the Facts Data Team',

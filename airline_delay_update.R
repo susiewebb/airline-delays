@@ -104,11 +104,6 @@ delayed_per <- delayed_per %>%
     by = "Airport"
   )
 
-##Updating the data for tomorrow
-write_csv(canceled, 'to_update/airline_canceled.csv')
-write_csv(canceled_per, 'to_update/airline_canceled_per.csv')
-write_csv(delayed, 'to_update/airline_delayed.csv')
-write_csv(delayed_per, 'to_update/airline_delayed_per.csv')
 
 ##Updating the datawrapper chart
 

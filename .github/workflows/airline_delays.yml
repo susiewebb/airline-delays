@@ -71,6 +71,7 @@ jobs:
                 Rscript "airline_delay_update.R"
 
       - name: Commit & push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore(data): refresh airline CSVs"
           file_pattern: |

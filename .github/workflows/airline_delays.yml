@@ -68,4 +68,13 @@ jobs:
                 . ~/.Renviron
                 Rscript "airline_delay_update.R"
 
-            
+      - name: Sanity check written file
+        run: |
+            ls -lah toupdate || true
+            test -f toupdate/airline_canceled.csv && echo "File exists" || (echo "CSV missing!" && exit 1)
+            wc -l toupdate/airline_canceled.csv || true
+            head -n 5 toupdate/airline_canceled.csv || true
+            echo "Git status:"
+            git status --porcelain
+        
+                    

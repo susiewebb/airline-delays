@@ -72,7 +72,7 @@ today <- gsub("AM", "a.m.", today)
 today <- gsub("PM", "p.m.", today)
 
 ##Adding yesterday's numbers
-canceled <- canceled %>%
+canceled_new <- canceled %>%
   left_join(
     airportYest %>%
       select(Airport, Canceled) %>%
@@ -80,7 +80,7 @@ canceled <- canceled %>%
     by = "Airport"
   )
 
-canceled_per <- canceled_per %>%
+canceled_per_new <- canceled_per %>%
   left_join(
     airportYest %>%
       select(Airport, `% C`) %>%
@@ -88,7 +88,7 @@ canceled_per <- canceled_per %>%
     by = "Airport"
   )
 
-delayed <- delayed %>%
+delayed_new <- delayed %>%
   left_join(
     airportYest %>%
       select(Airport, Delayed) %>%
@@ -96,7 +96,7 @@ delayed <- delayed %>%
     by = "Airport"
   )
 
-delayed_per <- delayed_per %>%
+delayed_per_new <- delayed_per %>%
   left_join(
     airportYest %>%
       select(Airport, `% D`) %>%
@@ -105,10 +105,15 @@ delayed_per <- delayed_per %>%
   )
 
 ##Resaving the csv
-write_csv(canceled, 'toupdate/airline_canceled.csv')
-write_csv(canceled_per, 'toupdate/airline_canceled_per.csv')
-write_csv(delayed, 'toupdate/airline_delayed.csv')
-write_csv(delayed_per,'toupdate/airline_delayed_per.csv')
+
+if (!yesterday %in% colnames(canceled_new)){
+  write_csv(canceled_new, 'toupdate/airline_canceled.csv')
+write_csv(canceled_per_new, 'toupdate/airline_canceled_per.csv')
+write_csv(delayed_new, 'toupdate/airline_delayed.csv')
+write_csv(delayed_per_new,'toupdate/airline_delayed_per.csv')
+}
+  
+
 
 ##Updating the datawrapper chart
 
@@ -129,7 +134,7 @@ dw_edit_chart(
 )
 
 #Adding data to the chart
-dw_data_to_chart(canceled,
+dw_data_to_chart(canceled_new,
                  chart_id = canceledChart
 )
 
@@ -154,7 +159,7 @@ intro = 'Click the icons below to see total flight delays/cancellations by each 
 )
 
 #Adding data to the chart
-dw_data_to_chart(canceled_per,
+dw_data_to_chart(canceled_per_new,
                  chart_id = canceledPerChart
 )
 
@@ -179,7 +184,7 @@ dw_edit_chart(
 )
 
 #Adding data to the chart
-dw_data_to_chart(delayed,
+dw_data_to_chart(delayed_new,
                  chart_id = delayedChart
 )
 
@@ -204,7 +209,7 @@ dw_edit_chart(
 )
 
 #Adding data to the chart
-dw_data_to_chart(delayed_per,
+dw_data_to_chart(delayed_per_new,
                  chart_id = delayedPerChart
 )
 

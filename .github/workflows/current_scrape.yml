@@ -54,7 +54,26 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
           CURRENT_KEY: ${{ secrets.CURRENT_KEY }}
 
+      - name: Commit and push if changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-                . ~/.Renviron
-                Rscript "current_update.R"
-            
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage only the CSVs you expect to update
+          git add toupdate/airline_canceled.csv \
+                  toupdate/airline_canceled_per.csv \
+                  toupdate/airline_delayed.csv \
+                  toupdate/airline_delayed_per.csv
+
+          # Commit only if there are changes
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(data): refresh airline CSVs on $(date -u +'%Y-%m-%d')"
+            # On scheduled runs there may be no ref name; push to default branch
+            TARGET_BRANCH="${{ github.ref_name || github.event.repository.default_branch }}"
+            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}" HEAD:"$TARGET_BRANCH"
+          else
+            echo "No changes to commit."
+          fi
+

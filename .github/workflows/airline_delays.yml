@@ -94,7 +94,6 @@ jobs:
                     toupdate/airline_delayed.csv \
                     toupdate/airline_delayed_per.csv || true
         
-            # Only continue if there are staged changes
             if git diff --cached --quiet; then
               echo "No changes to commit."
               exit 0
@@ -102,7 +101,6 @@ jobs:
         
             git commit -m "chore(data): refresh airline CSVs on $(date -u +'%Y-%m-%d')"
         
-            # Rebase our commit on top of the latest remote main
             git pull --rebase origin "$TARGET_BRANCH"
         
             echo "Pushing…"

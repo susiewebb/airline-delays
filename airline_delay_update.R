@@ -114,7 +114,7 @@ if (!yesterday %in% colnames(canceled)){
   write_csv(delayed_per_new,'toupdate/airline_delayed_per.csv')
 } else{
   canceled_new <- canceled
-  canced_per_new <- canceled_per
+  canceled_per_new <- canceled_per
   delayed_new <- delayed
   delayed_per_new <- delayed_per
   }

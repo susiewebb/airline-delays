@@ -72,47 +72,52 @@ today <- gsub("AM", "a.m.", today)
 today <- gsub("PM", "p.m.", today)
 
 ##Adding yesterday's numbers
-canceled_new <- canceled %>%
-  left_join(
-    airportYest %>%
-      select(Airport, Canceled) %>%
-      rename(!!yesterday := Canceled),
-    by = "Airport"
-  )
-
-canceled_per_new <- canceled_per %>%
-  left_join(
-    airportYest %>%
-      select(Airport, `% C`) %>%
-      rename(!!yesterday := `% C`),
-    by = "Airport"
-  )
-
-delayed_new <- delayed %>%
-  left_join(
-    airportYest %>%
-      select(Airport, Delayed) %>%
-      rename(!!yesterday := Delayed),
-    by = "Airport"
-  )
-
-delayed_per_new <- delayed_per %>%
-  left_join(
-    airportYest %>%
-      select(Airport, `% D`) %>%
-      rename(!!yesterday := `% D`),
-    by = "Airport"
-  )
-
-##Resaving the csv
 
 if (!yesterday %in% colnames(canceled)){
-  write_csv(canceled_new, 'toupdate/airline_canceled.csv')
-write_csv(canceled_per_new, 'toupdate/airline_canceled_per.csv')
-write_csv(delayed_new, 'toupdate/airline_delayed.csv')
-write_csv(delayed_per_new,'toupdate/airline_delayed_per.csv')
-}
   
+  canceled_new <- canceled %>%
+    left_join(
+      airportYest %>%
+        select(Airport, Canceled) %>%
+        rename(!!yesterday := Canceled),
+      by = "Airport"
+    )
+  
+  canceled_per_new <- canceled_per %>%
+    left_join(
+      airportYest %>%
+        select(Airport, `% C`) %>%
+        rename(!!yesterday := `% C`),
+      by = "Airport"
+    )
+  
+  delayed_new <- delayed %>%
+    left_join(
+      airportYest %>%
+        select(Airport, Delayed) %>%
+        rename(!!yesterday := Delayed),
+      by = "Airport"
+    )
+  
+  delayed_per_new <- delayed_per %>%
+    left_join(
+      airportYest %>%
+        select(Airport, `% D`) %>%
+        rename(!!yesterday := `% D`),
+      by = "Airport"
+    )
+
+##Resaving the csv
+  write_csv(canceled_new, 'toupdate/airline_canceled.csv')
+  write_csv(canceled_per_new, 'toupdate/airline_canceled_per.csv')
+  write_csv(delayed_new, 'toupdate/airline_delayed.csv')
+  write_csv(delayed_per_new,'toupdate/airline_delayed_per.csv')
+} else{
+  canceled_new <- canceled
+  canced_per_new <- canceled_per
+  delayed_new <- delayed
+  delayed_per_new <- delayed_per
+  }
 
 
 ##Updating the datawrapper chart

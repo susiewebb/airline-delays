@@ -70,12 +70,36 @@ jobs:
                 . ~/.Renviron
                 Rscript "airline_delay_update.R"
 
-      - name: Commit & push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore(data): refresh airline CSVs"
-          file_pattern: |
-            toupdate/airline_canceled.csv
-            toupdate/airline_canceled_per.csv
-            toupdate/airline_delayed.csv
-            toupdate/airline_delayed_per.csv
+      - name: Commit and rebase-push if changed
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+            REF_NAME: ${{ github.ref_name }}
+        run: |
+            set -e
+        
+            TARGET_BRANCH="${REF_NAME:-$DEFAULT_BRANCH}"
+            echo "Target branch: $TARGET_BRANCH"
+        
+            git fetch origin "$TARGET_BRANCH"
+            git checkout "$TARGET_BRANCH"
+        
+            echo "Staging expected CSVs…"
+            git add toupdate/airline_canceled.csv \
+                    toupdate/airline_canceled_per.csv \
+                    toupdate/airline_delayed.csv \
+                    toupdate/airline_delayed_per.csv || true
+        
+            # Only continue if there are staged changes
+            if git diff --cached --quiet; then
+              echo "No changes to commit."
+              exit 0
+            fi
+        
+            git commit -m "chore(data): refresh airline CSVs on $(date -u +'%Y-%m-%d')"
+        
+            # Rebase our commit on top of the latest remote main
+            git pull --rebase origin "$TARGET_BRANCH"
+        
+            echo "Pushing…"
+            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}" HEAD:"$TARGET_BRANCH"

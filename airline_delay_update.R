@@ -104,6 +104,8 @@ delayed_per <- delayed_per %>%
     by = "Airport"
   )
 
+##Resaving the csv
+write_csv(canceled, 'toupdate/airline_canceled.csv')
 
 ##Updating the datawrapper chart
 

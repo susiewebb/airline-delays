@@ -78,9 +78,13 @@ jobs:
         run: |
             set -e
         
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        
             TARGET_BRANCH="${REF_NAME:-$DEFAULT_BRANCH}"
             echo "Target branch: $TARGET_BRANCH"
         
+            # Make sure we're up to date with remote
             git fetch origin "$TARGET_BRANCH"
             git checkout "$TARGET_BRANCH"
         

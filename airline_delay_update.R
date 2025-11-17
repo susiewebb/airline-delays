@@ -106,7 +106,7 @@ delayed_per_new <- delayed_per %>%
 
 ##Resaving the csv
 
-if (!yesterday %in% colnames(canceled_new)){
+if (!yesterday %in% colnames(canceled)){
   write_csv(canceled_new, 'toupdate/airline_canceled.csv')
 write_csv(canceled_per_new, 'toupdate/airline_canceled_per.csv')
 write_csv(delayed_new, 'toupdate/airline_delayed.csv')

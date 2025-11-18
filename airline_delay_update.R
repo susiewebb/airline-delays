@@ -10,6 +10,7 @@ canceledChart <- Sys.getenv("CANCELED_KEY")
 canceledPerChart <- Sys.getenv("CANCELEDPER_KEY")
 delayedChart <- Sys.getenv("DELAYED_KEY")
 delayedPerChart <- Sys.getenv("DELAYEDPER_KEY")
+totalChart <- Sys.getenv("TOTAL_KEY")
 
 
 datawrapper_auth(api_key =  api_key, overwrite=TRUE)
@@ -220,4 +221,59 @@ dw_data_to_chart(delayed_per_new,
 
 #Republishing the chart
 dw_publish_chart(delayedPerChart)
+
+
+##Now pulling the total updates
+totals_old <- read_csv('toupdate/totals.csv')
+
+
+if (!(yesterday %in% totals_old$date)) {
+  total_html <- read_html('https://www.flightaware.com/live/cancelled/yesterday')
+  
+  totals <- total_html %>%
+    html_elements("div[style='float: left; display: inline-block; max-width: 74%'] h3") %>%
+    html_text(trim = TRUE)
+  
+  
+  totals <- data.frame(totals) %>%
+    separate(totals, into = c("key", "value"), sep = ":") %>%
+    mutate(
+      key = trimws(key),
+      value = trimws(value)
+    ) %>%
+    pivot_wider(names_from = key, values_from = value)
+    
+  totals_new <- rbind(totals_old, 
+                      data.frame(
+                        date = yesterday, 
+                        total_delays = totals$`Total delays within, into, or out of the United States yesterday`, 
+                        total_cancellations = totals$`Total cancellations within, into, or out of the United States yesterday`))
+  #Getting rid of any commas
+  totals_new$total_delays <- trimws(gsub(",", "", totals_new$total_delays))
+  totals_new$total_cancellations <- trimws(gsub(",", "", totals_new$total_cancellations))
+
+  write_csv(totals_new, 'toupdate/totals.csv')
+
+} else{
+  totals_new <- totals_old
+  }
+
+##Datawrapper chart!!!
+dw_edit_chart(
+  chart_id = totalChart,
+  title = 'U.S. air travel delays and cancellations',
+  intro = 'Below are the total daily delays and cancellations for all flights within, into or out of the U.S.',
+  byline = 'Susie Webb/Get the Facts Data Team',
+  source_name = 'Flight Aware',
+  source_url = 'flightaware.com',
+  annotate = paste0("<i>Data as of ",today,".")
+)
+
+#Adding data to the chart
+  dw_data_to_chart(totals_new,
+                   chart_id = totalChart
+  )
+
+#Republishing the chart
+dw_publish_chart(totalChart)
 

@@ -67,7 +67,7 @@ yesterday <- format(as.Date(with_tz(Sys.time(), tz = 'America/New_York')) - 1, "
 
 
 ##Pulling data as of
-today <- format(as.POSIXct(round_date(Sys.time(), 'hour'), tz = "America/New_York"), "%b. %d at %I %p %Z")
+today <- format(as.POSIXct(floor_date(Sys.time(), 'hour'), tz = "America/New_York"), "%b. %d at %I %p %Z")
 today <- sub(" at 0", " at ", today)
 today <- gsub("AM", "a.m.", today)
 today <- gsub("PM", "p.m.", today)

@@ -65,6 +65,7 @@ jobs:
           CANCELEDPER_KEY: ${{ secrets.CANCELED_PER }}
           DELAYED_KEY: ${{ secrets.DELAYED_KEY }}
           DELAYEDPER_KEY: ${{ secrets.DELAYEDPER_KEY }}
+          TOTAL_KEY: ${{ secrets.TOTAL_KEY }}
 
         run: |
                 . ~/.Renviron
@@ -92,7 +93,8 @@ jobs:
             git add toupdate/airline_canceled.csv \
                     toupdate/airline_canceled_per.csv \
                     toupdate/airline_delayed.csv \
-                    toupdate/airline_delayed_per.csv || true
+                    toupdate/airline_delayed_per.csv \
+                    toupdate/totals.csv || true
         
             if git diff --cached --quiet; then
               echo "No changes to commit."

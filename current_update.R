@@ -31,7 +31,7 @@ parse_table_rows <- function(page) {
 
   
 ##Working on the Airline updates
-airports <- '(^Delta Air Lines$)|(^Southwest$)|(^American Airlines$)|(^United Airlines$)'
+airports <- '(^Delta Air Lines$)|(^Southwest$)|(^American Airlines$)|(^United$)'
 
 airportNow_html <- read_html('https://www.flightaware.com/ajax/airport/cancelled_count.rvt?type=airline&timePeriod=today&airportFilter=')
 airportYest_html <- read_html('https://www.flightaware.com/ajax/airport/cancelled_count.rvt?type=airline&timePeriod=yesterday&airportFilter=')

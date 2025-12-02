@@ -60,6 +60,7 @@ today_now <- gsub("PM", "p.m.", today_now)
 
 today_head <- format(as.POSIXct(Sys.time(), tz = "America/New_York"), "%b. %d")
 today_head <- sub("\\. 0", ". ", today_head)
+today_now<- sub("\\. 0", ". ", today_now)
 
 
 ##Scraping

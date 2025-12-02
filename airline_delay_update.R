@@ -73,6 +73,8 @@ today <- sub(" at 0", " at ", today)
 today <- gsub("AM", "a.m.", today)
 today <- gsub("PM", "p.m.", today)
 
+today <- sub("\\. 0", ". ", today)
+
 ##Adding yesterday's numbers
 
 if (!yesterday %in% colnames(canceled)){

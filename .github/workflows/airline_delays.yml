@@ -41,9 +41,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/Rlib
-          key: ${{ runner.os }}-R-${{ hashFiles('**/scripts/*.R') }}
-          restore-keys: |
-            ${{ runner.os }}-R-
+          # New key so the old cache with the broken stringi is not restored
+          key: ${{ runner.os }}-R-icu-bundle-v2-${{ hashFiles('**/scripts/*.R') }}
 
       - name: Install R packages
         env:
@@ -52,11 +51,15 @@ jobs:
           mkdir -p ~/Rlib
           echo 'R_LIBS_USER=~/Rlib' >> ~/.Renviron
           echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >> ~/.Rprofile
-          Rscript -e 'install.packages("tidyverse", dependencies = TRUE, lib="~/Rlib")'
-          Rscript -e 'install.packages(c("jsonlite", "remotes", "magick", "usethis"), dependencies = TRUE, lib="~/Rlib")'
-          Rscript -e 'remotes::install_github("munichrocker/DatawRappr", lib="~/Rlib", auth_token=Sys.getenv("GITHUB_PAT"))'
-          Rscript -e '.libPaths("~/Rlib"); if (!require("tidyverse", lib.loc = "~/Rlib")) stop("tidyverse did not install")'
 
+          # Remove any cached stringi, then rebuild it with bundled ICU
+          Rscript -e 'if ("stringi" %in% rownames(installed.packages(lib.loc="~/Rlib"))) remove.packages("stringi", lib="~/Rlib")'
+          Rscript -e 'install.packages("stringi", type="source", configure.args="--disable-pkg-config", lib="~/Rlib")'
+
+          Rscript -e 'install.packages("tidyverse", dependencies=TRUE, lib="~/Rlib")'
+          Rscript -e 'install.packages(c("jsonlite", "remotes", "magick", "usethis"), dependencies=TRUE, lib="~/Rlib")'
+          Rscript -e 'remotes::install_github("munichrocker/DatawRappr", lib="~/Rlib", auth_token=Sys.getenv("GITHUB_PAT"))'
+          Rscript -e '.libPaths("~/Rlib"); library(tidyverse)'
 
       - name: Run scraper
         env:

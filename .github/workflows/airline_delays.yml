@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 9 * * *"
+     - cron: "0 9 * * *"
   workflow_dispatch:
 
 permissions:
@@ -20,12 +20,15 @@ jobs:
           fetch-depth: 0
       - uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.5.1"
+          r-version: "4.5.2"
           
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            libicu-dev \
+            libpng-dev \
+            zlib1g-dev \
             libcurl4-openssl-dev \
             libssl-dev \
             libgit2-dev \
@@ -41,8 +44,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/Rlib
-          # New key so the old cache with the broken stringi is not restored
-          key: ${{ runner.os }}-R-icu-bundle-v2-${{ hashFiles('**/scripts/*.R') }}
+          key: ${{ runner.os }}-R-v3-${{ hashFiles('**/scripts/*.R') }}
 
       - name: Install R packages
         env:
@@ -52,14 +54,14 @@ jobs:
           echo 'R_LIBS_USER=~/Rlib' >> ~/.Renviron
           echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >> ~/.Rprofile
 
-          # Remove any cached stringi, then rebuild it with bundled ICU
-          Rscript -e 'if ("stringi" %in% rownames(installed.packages(lib.loc="~/Rlib"))) remove.packages("stringi", lib="~/Rlib")'
-          Rscript -e 'install.packages("stringi", type="source", configure.args="--disable-pkg-config", lib="~/Rlib")'
-
-          Rscript -e 'install.packages("tidyverse", dependencies=TRUE, lib="~/Rlib")'
-          Rscript -e 'install.packages(c("jsonlite", "remotes", "magick", "usethis"), dependencies=TRUE, lib="~/Rlib")'
-          Rscript -e 'remotes::install_github("munichrocker/DatawRappr", lib="~/Rlib", auth_token=Sys.getenv("GITHUB_PAT"))'
-          Rscript -e '.libPaths("~/Rlib"); library(tidyverse)'
+          Rscript -e '
+            .libPaths(c("~/Rlib", .libPaths()))
+            install.packages(c("tidyverse", "jsonlite", "remotes", "magick", "usethis"), dependencies = TRUE, lib = "~/Rlib")
+            if (!requireNamespace("usethis", quietly = TRUE)) stop("usethis failed to install")
+            remotes::install_github("munichrocker/DatawRappr", lib = "~/Rlib", auth_token = Sys.getenv("GITHUB_PAT"))
+            library(tidyverse)
+            library(DatawRappr)
+          '
 
       - name: Run scraper
         env:
@@ -69,44 +71,40 @@ jobs:
           DELAYED_KEY: ${{ secrets.DELAYED_KEY }}
           DELAYEDPER_KEY: ${{ secrets.DELAYEDPER_KEY }}
           TOTAL_KEY: ${{ secrets.TOTAL_KEY }}
-
         run: |
-                . ~/.Renviron
-                Rscript "airline_delay_update.R"
+          . ~/.Renviron
+          Rscript "airline_delay_update.R"
 
       - name: Commit and rebase-push if changed
         env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-            REF_NAME: ${{ github.ref_name }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-            set -e
-        
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        
-            TARGET_BRANCH="${REF_NAME:-$DEFAULT_BRANCH}"
-            echo "Target branch: $TARGET_BRANCH"
-        
-            # Make sure we're up to date with remote
-            git fetch origin "$TARGET_BRANCH"
-            git checkout "$TARGET_BRANCH"
-        
-            echo "Staging expected CSVs…"
-            git add toupdate/airline_canceled.csv \
-                    toupdate/airline_canceled_per.csv \
-                    toupdate/airline_delayed.csv \
-                    toupdate/airline_delayed_per.csv \
-                    toupdate/totals.csv || true
-        
-            if git diff --cached --quiet; then
-              echo "No changes to commit."
-              exit 0
-            fi
-        
-            git commit -m "chore(data): refresh airline CSVs on $(date -u +'%Y-%m-%d')"
-        
-            git pull --rebase origin "$TARGET_BRANCH"
-        
-            echo "Pushing…"
-            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}" HEAD:"$TARGET_BRANCH"
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          TARGET_BRANCH="${REF_NAME:-$DEFAULT_BRANCH}"
+          echo "Target branch: $TARGET_BRANCH"
+
+          git fetch origin "$TARGET_BRANCH"
+          git checkout "$TARGET_BRANCH"
+
+          echo "Staging expected CSVs…"
+          git add toupdate/airline_canceled.csv \
+                  toupdate/airline_canceled_per.csv \
+                  toupdate/airline_delayed.csv \
+                  toupdate/airline_delayed_per.csv \
+                  toupdate/totals.csv || true
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(data): refresh airline CSVs on $(date -u +'%Y-%m-%d')"
+          git pull --rebase origin "$TARGET_BRANCH"
+
+          echo "Pushing…"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}" HEAD:"$TARGET_BRANCH"
